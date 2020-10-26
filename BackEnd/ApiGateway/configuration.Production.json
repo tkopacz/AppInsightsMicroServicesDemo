@@ -1,0 +1,28 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/searchtickets",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "mappstadevms1.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/tickets1",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/searchtickets",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "mappstadevms2.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/tickets2",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ]
+}

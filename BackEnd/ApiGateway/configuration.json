@@ -1,0 +1,62 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/devices",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TODO: devices microservice root url",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/devices",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/AddNewDevice",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TODO: devices microservice root url",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/NewDevice",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/alerts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TODO: alerts microservice root url",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/alerts",
+      "UpstreamHttpMethod": [ "Get" ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 10000,
+        "TimeoutValue": 1500
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/alerts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TODO: alerts microservice root url",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/NewAlert",
+      "UpstreamHttpMethod": [ "Post" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "TODO: API Gateway root url",
+    "RequestIdKey": "OcRequestId",
+    "AdministrationPath": "/administration"
+  }
+}
