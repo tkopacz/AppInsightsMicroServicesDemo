@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      workDir: ./BackEnd//MicroAlerts/MicroAlerts
+      workDir: ./BackEnd/MicroAlerts/MicroAlerts
       MSALERTS_WEBAPP_NAME: agilesedq      
     steps:
     - uses: actions/checkout@v2
@@ -21,21 +21,21 @@ jobs:
         dotnet-version: 3.1.301        
     - name: Docker Build Alerts Microservice
       run: |
-        docker build -t ${{ env.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }} -f ${{env.workDir}}/Dockerfile ${{env.workDir}}    
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }} -f ${{env.workDir}}/Dockerfile ${{env.workDir}}    
     - name: ACR authentication    
       uses: azure/docker-login@v1
       with:
-        login-server: ${{ env.CONTAINER_REGISTRY }}
+        login-server: ${{ secrets.CONTAINER_REGISTRY }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}  
     - name: Docker Build & Push to ACR      
       run: |
-        docker push ${{ env.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }}    
     - name: 'Deploy to Azure Web App for Container'      
       uses: azure/webapps-deploy@v2
       with: 
         app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
-        images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
+        images: ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }}
         slot-name: 'production' 
         
         
