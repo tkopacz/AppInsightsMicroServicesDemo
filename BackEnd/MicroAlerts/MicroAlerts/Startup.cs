@@ -36,7 +36,7 @@ namespace MicroAlerts
             try
             {
                 string ServiceBusConnectionString = Configuration["ServiceBus:ConnectionString"];
-                string TopicName = Configuration("ServiceBus:TopicName");
+                string TopicName = Configuration["ServiceBus:TopicName"];
                 TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
                 return _topicClient;
