@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - './BackEnd/MicroAlerts/MicroAlerts/**'
+      - 'BackEnd/MicroAlerts/MicroAlerts/**'
       - '.github/workflows/MicroAlerts_CICD.yml'      
   pull_request:
     branches: [ main ]
