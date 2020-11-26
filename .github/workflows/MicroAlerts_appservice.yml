@@ -19,6 +19,6 @@ jobs:
         dotnet-version: 3.1.301
     - name: Install dependencies
       run: dotnet restore
-      working-directory: ./BackEnd/MicroAlerts/MicroAlerts
-    - name: Build
+      working-directory: ./BackEnd
+    - name: Build all projects
       run: dotnet build --configuration Release --no-restore
