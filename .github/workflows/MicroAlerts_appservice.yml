@@ -18,17 +18,24 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.301
-    - name: Build Alerts MicroService project
-      working-directory: ${{env.workDir}}
-      run: dotnet build MicroAlerts.csproj --configuration Release
-    - name: Create Release for Alerts MicroService
-      working-directory: ${{env.workDir}}
-      run: dotnet publish -c Release -o 'msalerts'
-      # Deploy Alerts MicroService to Web App
-    - name: 'MsAlerts - Run Azure webapp deploy action using publish profile credentials'      
-      uses: azure/webapps-deploy@v2      
+        dotnet-version: 3.1.301        
+    - name: Docker Build Alerts Microservice
+      run: |
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }} -f ${{env.workDir}}/Dockerfile ${{env.workDir}}    
+    - name: ACR authentication    
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}  
+    - name: Docker Build & Push to ACR      
+      run: |
+        docker push ${{ env.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
+    - name: 'Deploy to Azure Web App for Container'      
+      uses: azure/webapps-deploy@v2
       with: 
-        app-name: ${{ env.MSALERTS_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.MS_ALERTS_WEB_APP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-        package: '${{ env.workDir }}/msalerts'
+        app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
+        images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
+        slot-name: 'production' 
+        
+        
