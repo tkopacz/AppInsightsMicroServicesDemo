@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore
-      working-directory: ./AppInsightsMicroServicesDemo/BackEnd
+      run: dotnet restore      
     - name: Build all projects
+      working-directory: ./AppInsightsMicroServicesDemo/BackEnd
       run: dotnet build --configuration Release --no-restore
