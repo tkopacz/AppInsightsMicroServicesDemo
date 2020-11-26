@@ -10,7 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+    env:
+      workDir: ./AppInsightsMicroServicesDemo/BackEnd/
 
     steps:
     - uses: actions/checkout@v2
@@ -19,6 +20,8 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore      
+      run: dotnet restore
+      working-directory: ${{env.workDir}}
     - name: Build all projects
+      working-directory: ${{env.workDir}}
       run: dotnet build --configuration Release --no-restore
