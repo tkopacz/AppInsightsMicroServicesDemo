@@ -30,6 +30,7 @@ jobs:
         docker push ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
     
   Deploy_to_App_Service:
+    needs: Build_and_deploy_to_ACR
     runs-on: ubuntu-latest
     env:      
       MSALERTS_WEBAPP_NAME: appinsightsmsalerts
