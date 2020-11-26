@@ -10,6 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
 
     steps:
     - uses: actions/checkout@v2
@@ -20,5 +21,4 @@ jobs:
     - name: Install dependencies
       run: dotnet restore      
     - name: Build all projects
-      working-directory: ./AppInsightsMicroServicesDemo/BackEnd
       run: dotnet build --configuration Release --no-restore
