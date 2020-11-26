@@ -29,7 +29,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "TODO: alerts microservice root url",
+          "Host": "appinsightsmsalerts.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -46,7 +46,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "TODO: alerts microservice root url",
+          "Host": "appinsightsmsalerts.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -55,7 +55,7 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "TODO: API Gateway root url",
+    "BaseUrl": "appinsightsapigw.azurewebsites.net",
     "RequestIdKey": "OcRequestId",
     "AdministrationPath": "/administration"
   }
