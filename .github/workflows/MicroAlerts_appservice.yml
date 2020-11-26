@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      workDir: ./BackEnd/MicroAlerts/MicroAlerts
+      workDir: ./BackEnd
       MSALERTS_WEBAPP_NAME: agilesedq      
     steps:
     - uses: actions/checkout@v2
@@ -20,9 +20,8 @@ jobs:
       with:
         dotnet-version: 3.1.301        
     - name: Docker Build Alerts Microservice
-      working-directory: ${{env.workDir}}
       run: |
-        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }} . 
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }} -f ${{env.workDir}}/MicroAlerts/MicroAlerts/Dockerfile ${{env.workDir}}
     - name: ACR authentication    
       uses: azure/docker-login@v1
       with:
