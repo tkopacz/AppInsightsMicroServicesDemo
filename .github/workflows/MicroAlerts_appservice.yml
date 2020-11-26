@@ -27,6 +27,10 @@ jobs:
     - name: Docker Build & Push to ACR      
       run: |
         docker push ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: 'Deploy to Azure Web App for Container'      
       uses: azure/webapps-deploy@v2
       with: 
