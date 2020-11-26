@@ -31,19 +31,18 @@ jobs:
     
   deploy to App Service:
     runs-on: ubuntu-latest
-    env:
-      workDir: ./BackEnd
+    env:      
       MSALERTS_WEBAPP_NAME: appinsightsmsalerts
     steps:
       - name: Azure authentication
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: 'Deploy to Azure Web App for Container'      
-      uses: azure/webapps-deploy@v2
-      with: 
-        app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
-        images: ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}
-        slot-name: 'production' 
+      - name: 'Deploy to Azure Web App for Container'      
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
+          images: ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}
+          slot-name: 'production' 
         
         
