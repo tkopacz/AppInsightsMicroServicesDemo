@@ -3,6 +3,9 @@ name: .NET Core
 on:
   push:
     branches: [ main ]
+    paths:
+      - './BackEnd/MicroAlerts/**'
+      - '.github/workflows/MicroAlerts_CICD.yml'      
   pull_request:
     branches: [ main ]
 
