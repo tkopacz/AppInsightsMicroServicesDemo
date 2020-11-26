@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build and deploy to ACR:
+  Build_and_deploy_to_ACR:
     runs-on: ubuntu-latest
     env:
       workDir: ./BackEnd         
@@ -29,7 +29,7 @@ jobs:
       run: |
         docker push ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
     
-  deploy to App Service:
+  Deploy_to_App_Service:
     runs-on: ubuntu-latest
     env:      
       MSALERTS_WEBAPP_NAME: appinsightsmsalerts
