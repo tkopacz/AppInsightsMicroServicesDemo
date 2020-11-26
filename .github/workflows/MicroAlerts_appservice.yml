@@ -12,13 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       workDir: ./BackEnd
-      MSALERTS_WEBAPP_NAME: agilesedq      
+      MSALERTS_WEBAPP_NAME: appinsightsmsalerts      
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.301        
+    - uses: actions/checkout@v2    
     - name: Docker Build Alerts Microservice
       run: |
         docker build -t ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }} -f ${{env.workDir}}/MicroAlerts/MicroAlerts/Dockerfile ${{env.workDir}}
@@ -30,12 +26,12 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}  
     - name: Docker Build & Push to ACR      
       run: |
-        docker push ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }}    
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
     - name: 'Deploy to Azure Web App for Container'      
       uses: azure/webapps-deploy@v2
       with: 
         app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
-        images: ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }}
+        images: ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}
         slot-name: 'production' 
         
         
