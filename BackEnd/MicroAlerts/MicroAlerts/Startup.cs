@@ -33,11 +33,18 @@ namespace MicroAlerts
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)
         {
-            string ServiceBusConnectionString = Configuration["ServiceBus:ConnectionString"];
-            string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
-            TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
-            
-            return _topicClient;
+            try
+            {
+                string ServiceBusConnectionString = Configuration["ServiceBus:ConnectionString"];
+                string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
+                TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
+
+                return _topicClient;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to initialize Service Bus for Alerts Microservice", ex);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
