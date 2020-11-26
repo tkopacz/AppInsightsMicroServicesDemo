@@ -11,17 +11,24 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      workDir: ./BackEnd/
-
+      workDir: ./BackEnd//MicroAlerts/MicroAlerts
+      MSALERTS_WEBAPP_NAME: agilesedq      
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Install dependencies
-      run: dotnet restore
+    - name: Build Alerts MicroService project
       working-directory: ${{env.workDir}}
-    - name: Build all projects
+      run: dotnet build MicroAlerts.csproj --configuration Release
+    - name: Create Release for Alerts MicroService
       working-directory: ${{env.workDir}}
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet publish -c Release -o 'msalerts'
+      # Deploy Alerts MicroService to Web App
+    - name: 'MsAlerts - Run Azure webapp deploy action using publish profile credentials'      
+      uses: azure/webapps-deploy@v2      
+      with: 
+        app-name: ${{ env.MSALERTS_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.MS_ALERTS_WEB_APP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+        package: '${{ env.workDir }}/msalerts'
