@@ -5,13 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-
-# copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore "MicroAlerts.csproj"
-
-COPY . ./
-WORKDIR "/src"
+COPY ["MicroAlerts/MicroAlerts/MicroAlerts.csproj", "MicroAlerts/MicroAlerts/"]
+RUN dotnet restore "MicroAlerts/MicroAlerts/MicroAlerts.csproj"
+COPY . .
+WORKDIR "/src/MicroAlerts/MicroAlerts"
 RUN dotnet build "MicroAlerts.csproj" -c Release -o /app/build
 
 FROM build AS publish
