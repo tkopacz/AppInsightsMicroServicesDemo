@@ -36,7 +36,7 @@ namespace MicroAlerts
             try
             {
                 string ServiceBusConnectionString = Configuration["ServiceBus:ConnectionString"];
-                string TopicName = Environment.GetEnvironmentVariable("ServiceBus:TopicName");
+                string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
                 TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
                 return _topicClient;
