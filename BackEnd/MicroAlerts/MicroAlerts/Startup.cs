@@ -33,8 +33,8 @@ namespace MicroAlerts
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)
         {
-            string ServiceBusConnectionString = "TODO: Get Service bus connection string from Env Variable";
-            string TopicName = "messagebus";
+            string ServiceBusConnectionString = Configuration["ServiceBus:ConnectionString"];
+            string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
             TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
             
             return _topicClient;
@@ -57,7 +57,7 @@ namespace MicroAlerts
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });            
         }
     }
 }
