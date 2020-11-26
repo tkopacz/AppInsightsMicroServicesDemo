@@ -1,11 +1,11 @@
-name: CI CD - Alerts Microservice
+name: CI CD - API Gateway
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'BackEnd/MicroAlerts/MicroAlerts/**'
-      - '.github/workflows/MicroAlerts_CICD.yml'      
+      - 'BackEnd/ApiGateway/**'
+      - '.github/workflows/ApiGW_CICD.yml'      
   pull_request:
     branches: [ main ]
 
@@ -16,9 +16,9 @@ jobs:
       workDir: ./BackEnd         
     steps:
     - uses: actions/checkout@v2    
-    - name: Docker Build Alerts Microservice
+    - name: Docker Build API Gateway
       run: |
-        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }} -f ${{env.workDir}}/MicroAlerts/MicroAlerts/Dockerfile ${{env.workDir}}
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ github.run_number }} -f ${{env.workDir}}/ApiGateway/Dockerfile ${{env.workDir}}
     - name: ACR authentication    
       uses: azure/docker-login@v1
       with:
@@ -27,13 +27,13 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}  
     - name: Docker Build & Push to ACR      
       run: |
-        docker push ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}    
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ github.run_number }}    
     
   Deploy_to_App_Service:
     needs: Build_and_deploy_to_ACR
     runs-on: ubuntu-latest
     env:      
-      MSALERTS_WEBAPP_NAME: appinsightsmsalerts
+      APIGW_WEBAPP_NAME: appinsightsapigw
     steps:
       - name: Azure authentication
         uses: azure/login@v1
@@ -42,8 +42,8 @@ jobs:
       - name: 'Deploy to Azure Web App for Container'      
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
-          images: ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}
+          app-name: ${{ env.APIGW_WEBAPP_NAME }} 
+          images: ${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ github.run_number }}
           slot-name: 'production' 
         
         
