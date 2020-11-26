@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v2    
     - name: Docker Build Alerts Microservice
       run: |
-        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/appinsightsdemo/msalerts:${{ github.run_number }} -f ${{env.workDir}}/MicroAlerts/MicroAlerts/Dockerfile ${{env.workDir}}
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }} -f ${{env.workDir}}/MicroAlerts/MicroAlerts/Dockerfile ${{env.workDir}}
     - name: ACR authentication    
       uses: azure/docker-login@v1
       with:
