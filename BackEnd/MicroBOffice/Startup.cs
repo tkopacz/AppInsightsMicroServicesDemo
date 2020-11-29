@@ -22,8 +22,8 @@ namespace MicroBOffice
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)
         {
-            string ServiceBusConnectionString = Environment.GetEnvironmentVariable("SB:ConnectionString");
-            string TopicName = Environment.GetEnvironmentVariable("SB:TopicName");
+            string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
+            string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
             TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
             return _topicClient;
