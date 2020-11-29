@@ -23,10 +23,10 @@ namespace MicroDevices
 
         private Container GetContainer(IServiceProvider options)
         {
-            var lConnectionString = Environment.GetEnvironmentVariable("CosmosConnectionString");
-            var lCosmosDbName = Environment.GetEnvironmentVariable("CosmosDbName");
-            var lCosmosDbContainerName = Environment.GetEnvironmentVariable("CosmosDbContainerName");
-            var lCosmosDbPartionKey = Environment.GetEnvironmentVariable("CosmosDbPartitionKey");
+            var lConnectionString = Environment.GetEnvironmentVariable("Cosmos:ConnectionString");
+            var lCosmosDbName = Environment.GetEnvironmentVariable("Cosmos:DbName");
+            var lCosmosDbContainerName = Environment.GetEnvironmentVariable("Cosmos:DbContainerName");
+            var lCosmosDbPartionKey = Environment.GetEnvironmentVariable("Cosmos:DbPartitionKey");
 
             var lClient = new CosmosClient(lConnectionString, new CosmosClientOptions
             {
@@ -42,8 +42,8 @@ namespace MicroDevices
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)
         {
-            string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnection");
-            string TopicName = "messagebus";
+            string ServiceBusConnectionString = Environment.GetEnvironmentVariable("SB:ConnectionString");
+            string TopicName = Environment.GetEnvironmentVariable("SB:TopicName");
             TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
             return _topicClient;
