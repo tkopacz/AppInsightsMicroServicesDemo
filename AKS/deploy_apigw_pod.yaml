@@ -22,4 +22,4 @@ spec:
           value: "5928c9cf-3ad6-4b17-9087-380c4917c7aa"      
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 8080

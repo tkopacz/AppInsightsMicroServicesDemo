@@ -55,7 +55,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "ServiceBus__ConnectionString_Value"
-          replace: ${{ secrets.AZURE_CREDENTIALS }}
+          replace: ${{ secrets.SERVICE_BUS_CONNECTIONSTRING }}
           include: "./AKS/"  
       - name: 'Login to AKS Cluster'
         uses: azure/aks-set-context@v1
