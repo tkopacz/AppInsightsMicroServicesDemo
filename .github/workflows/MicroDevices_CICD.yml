@@ -6,7 +6,7 @@ on:
     paths:
       - 'BackEnd/MicroDevices/**'
       - '.github/workflows/MicroDevices_CICD.yml'
-      - 'AKS/deploy_devices**'   
+      - 'AKS/deploy_devices**'
   pull_request:
     branches: [ main ]
 
