@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/devices",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "appinsightsmsdevices.azurewebsites.net",
-          "Port": 443
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/devices",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/alerts",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "appinsightsmsalerts.azurewebsites.net",
-          "Port": 443
+          "Host": "alerts",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/alerts",
@@ -43,11 +43,11 @@
     },
     {
       "DownstreamPathTemplate": "/alerts",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "appinsightsmsalerts.azurewebsites.net",
-          "Port": 443
+          "Host": "alerts",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/NewAlert",
@@ -55,7 +55,7 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "appinsightsapigw.azurewebsites.net",
+    "BaseUrl": "20.71.67.81",
     "RequestIdKey": "OcRequestId",
     "AdministrationPath": "/administration"
   }
