@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alerts
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: alerts
+  template:
+    metadata:
+      labels:
+        app: alerts
+    spec:
+      containers:
+      - name: alerts
+        image: appinsightsdp.azurecr.io/msalerts:10
+        env:
+        - name: ServiceBus__ConnectionString
+          value: "ProductionOnAKS"
+        - name: ServiceBus__TopicName
+          value: "5928c9cf-3ad6-4b17-9087-380c4917c7aa"      
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
