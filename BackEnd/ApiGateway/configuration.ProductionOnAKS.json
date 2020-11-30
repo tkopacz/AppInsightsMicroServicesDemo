@@ -29,7 +29,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "alerts",
+          "Host": "alerts.default.svc.cluster.local",
           "Port": 80
         }
       ],
@@ -46,7 +46,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "alerts",
+          "Host": "alerts.default.svc.cluster.local",
           "Port": 80
         }
       ],
