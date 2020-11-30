@@ -16,12 +16,12 @@ spec:
       - name: alerts
         image: appinsightsdp.azurecr.io/msalerts:10
         env:
-        - name: ServiceBus:ConnectionString
+        - name: ServiceBus__ConnectionString
           valueFrom:
             secretKeyRef:
               name: servicebussecret # the name of the Kubernetes secret containing the data
               key: SERVICEBUSCONNECTIONSTRING # the key inside the Kubernetes secret containing the data
-        - name: ServiceBus:TopicName
+        - name: ServiceBus__TopicName
           value: "messagebus"
         imagePullPolicy: Always
         ports:
