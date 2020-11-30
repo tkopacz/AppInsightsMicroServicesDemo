@@ -5,7 +5,8 @@ on:
     branches: [ main ]
     paths:
       - 'BackEnd/MicroAlerts/MicroAlerts/**'
-      - '.github/workflows/MicroAlerts_CICD.yml'      
+      - '.github/workflows/MicroAlerts_CICD.yml'
+      - 'AKS/deploy_alerts**' 
   pull_request:
     branches: [ main ]
 
