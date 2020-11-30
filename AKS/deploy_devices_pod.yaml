@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devices
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devices
+  template:
+    metadata:
+      labels:
+        app: devices
+    spec:
+      containers:
+      - name: devices
+        image: appinsightsdp.azurecr.io/msdevices:10
+        env:
+        - name: ServiceBus__ConnectionString
+          valueFrom:
+            secretKeyRef:
+              name: devicessecrets # the name of the Kubernetes secret containing the data
+              key: SERVICEBUSCONNECTIONSTRING # the key inside the Kubernetes secret containing the data
+        - name: ServiceBus__TopicName
+          value: "messagebus"
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          valueFrom:
+            secretKeyRef:
+              name: devicessecrets # the name of the Kubernetes secret containing the data
+              key: APPINSIGHTS_INSTRUMENTATIONKEY # the key inside the Kubernetes secret containing the data
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

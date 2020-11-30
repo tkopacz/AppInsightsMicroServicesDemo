@@ -5,7 +5,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "appinsightsmsdevices.azurewebsites.net",
+          "Host": "devices.default.svc.cluster.local",
           "Port": 80
         }
       ],
@@ -17,8 +17,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "appinsightsmsdevices.azurewebsites.net",
-          "Port": 443
+          "Host": "devices.default.svc.cluster.local",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/NewDevice",

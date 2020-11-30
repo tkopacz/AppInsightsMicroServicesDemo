@@ -5,7 +5,8 @@ on:
     branches: [ main ]
     paths:
       - 'BackEnd/MicroDevices/**'
-      - '.github/workflows/MicroDevices_CICD.yml'      
+      - '.github/workflows/MicroDevices_CICD.yml'
+      - 'AKS/deploy_devices**'   
   pull_request:
     branches: [ main ]
 
@@ -35,5 +36,51 @@ jobs:
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.AZURE_DEVICES_FUNCTIONAPP_PUBLISH_PROFILE }}    
+        publish-profile: ${{ secrets.AZURE_DEVICES_FUNCTIONAPP_PUBLISH_PROFILE }}
+  
+  Build_and_deploy_to_ACR:
+    runs-on: ubuntu-latest
+    env:
+      workDir: ./BackEnd         
+    steps:
+    - uses: actions/checkout@v2    
+    - name: Docker Build devices Microservice
+      run: |
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }} -f ${{env.workDir}}/MicroDevices/Dockerfile ${{env.workDir}}
+    - name: ACR authentication    
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}  
+    - name: Docker Build & Push to ACR      
+      run: |
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }}
+  
+  Deploy_to_AKS:
+    needs: Build_and_deploy_to_ACR
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v2        
+      - name: 'Login to AKS Cluster'
+        uses: azure/aks-set-context@v1
+        with:
+            creds: '${{ secrets.AZURE_CREDENTIALS }}'
+            resource-group: 'AppInsightsMicroservices_RG'
+            cluster-name: 'aksinfra-appinsightsmicro'
+        id: login
+      - uses: azure/k8s-create-secret@v1
+        with:
+          namespace: 'default'
+          secret-type: 'generic'
+          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }}
+          secret-name: devicessecrets
+      - name: 'Deploy Devices Microservice to AKS Cluster'
+        uses: azure/k8s-deploy@v1.3                    
+        with:        
+          manifests: |
+              ./AKS/deploy_devices_pod.yaml
+              ./AKS/deploy_devices_service.yaml
+          images: '${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }}'          
+          kubectl-version: 'latest'
         
