@@ -44,6 +44,33 @@ jobs:
         with: 
           app-name: ${{ env.MSALERTS_WEBAPP_NAME }} 
           images: ${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}
-          slot-name: 'production' 
+          slot-name: 'production'
+  
+  Deploy_to_AKS:
+    needs: Build_and_deploy_to_ACR
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find and Replace ENV Variables
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "ServiceBus__ConnectionString_Value"
+          replace: ${{ secrets.AZURE_CREDENTIALS }}
+          include: "./AKS/"  
+      - name: 'Login to AKS Cluster'
+        uses: azure/aks-set-context@v1
+        with:
+            creds: '${{ secrets.AZURE_CREDENTIALS }}'
+            resource-group: 'AppInsightsMicroservices_RG'
+            cluster-name: 'aksinfra-appinsightsmicro'
+        id: login
+      - name: 'Deploy ApiGW to AKS Cluster'
+        uses: azure/k8s-deploy@v1.3                    
+        with:        
+          manifests: |
+              ./AKS/deploy_alerts_pod.yaml
+              ./AKS/deploy_alerts_service.yaml
+          images: '${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}'          
+          kubectl-version: 'latest'
         
         

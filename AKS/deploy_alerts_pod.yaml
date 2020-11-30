@@ -17,9 +17,9 @@ spec:
         image: appinsightsdp.azurecr.io/msalerts:10
         env:
         - name: ServiceBus__ConnectionString
-          value: "ProductionOnAKS"
+          value: "ServiceBus__ConnectionString_Value"
         - name: ServiceBus__TopicName
-          value: "5928c9cf-3ad6-4b17-9087-380c4917c7aa"      
+          value: "messagebus"      
         imagePullPolicy: Always
         ports:
         - containerPort: 80

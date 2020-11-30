@@ -14,7 +14,12 @@ spec:
     spec:
       containers:
       - name: apigw
-        image: appinsightsdp.azurecr.io/apigw:7             
+        image: appinsightsdp.azurecr.io/apigw:7
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "ProductionOnAKS"
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: "5928c9cf-3ad6-4b17-9087-380c4917c7aa"      
         imagePullPolicy: Always
         ports:
         - containerPort: 80
