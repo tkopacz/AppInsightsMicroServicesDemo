@@ -49,7 +49,7 @@ jobs:
   Deploy_to_AKS:
     needs: Build_and_deploy_to_ACR
     runs-on: ubuntu-latest
-    working-directory: ./AKS
+    working-directory: './AKS'
     steps:
       - uses: actions/checkout@v2 
       - name: 'Login to AKS Cluster'
