@@ -64,10 +64,7 @@ jobs:
           manifests: |
               ./AKS/deploy_apigw_pod.yaml
               ./AKS/deploy_apigw_service.yaml
-          images: '${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ github.run_number }}'
-          env:          
-            ASPNETCORE_ENVIRONMENT: ProductionOnAKS,
-            APPINSIGHTS_INSTRUMENTATIONKEY: 5928c9cf-3ad6-4b17-9087-380c4917c7aa
+          images: '${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ github.run_number }}'          
           kubectl-version: 'latest'
         
         
