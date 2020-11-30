@@ -48,9 +48,7 @@ jobs:
   
   Deploy_to_AKS:
     needs: Build_and_deploy_to_ACR
-    runs-on: ubuntu-latest
-    env:
-      workDir: ./AKS  
+    runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v2 
       - name: 'Login to AKS Cluster'
@@ -60,13 +58,11 @@ jobs:
             resourceGroupName: 'AppInsightsMicroservices_RG'
             clusterName: 'aksinfra-appinsightsmicro'
         id: login
-      - name: 'Deploy API GW to AKS Cluster'
-        working-directory: ${{env.workDir}}
-        uses: azure/k8s-deploy@v1.3        
+      - uses: azure/k8s-deploy@v1.3                    
         with:        
           manifests: |
-              deploy_apigw_pod.yaml
-              deploy_apigw_service.yaml
+              .AKS/deploy_apigw_pod.yaml
+              .AKS/deploy_apigw_service.yaml
           images: '${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ event.run_number }}'          
           kubectl-version: 'latest'
         
