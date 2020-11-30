@@ -50,16 +50,16 @@ jobs:
     needs: Build_and_deploy_to_ACR
     runs-on: ubuntu-latest
     steps:
-      - name: Login to AKS Cluster
+      - name: 'Login to AKS Cluster'
         uses: azure/aks-set-context@v1
         with:
             creds: '${{ secrets.AZURE_CREDENTIALS }}'
             resourceGroupName: 'AppInsightsMicroservices_RG'
             clusterName: 'aksinfra-appinsightsmicro'
         id: login
-      - name: Deploy API GW to AKS Cluster
-        working-directory: ./AKS
-        uses: Azure/k8s-deploy@v1.3
+      - name: 'Deploy API GW to AKS Cluster'
+        uses: azure/k8s-deploy@v1.3
+        working-directory: ./AKS        
         with:        
           manifests: |
               deploy_apigw_pod.yaml
