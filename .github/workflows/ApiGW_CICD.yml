@@ -49,7 +49,8 @@ jobs:
   Deploy_to_AKS:
     needs: Build_and_deploy_to_ACR
     runs-on: ubuntu-latest
-    workDir: ./AKS  
+    env:
+      workDir: ./AKS  
     steps:
       - uses: actions/checkout@v2 
       - name: 'Login to AKS Cluster'
@@ -59,7 +60,8 @@ jobs:
             resourceGroupName: 'AppInsightsMicroservices_RG'
             clusterName: 'aksinfra-appinsightsmicro'
         id: login
-      - name: 'Deploy API GW to AKS Cluster'        
+      - name: 'Deploy API GW to AKS Cluster'
+        working-directory: ${{env.workDir}}
         uses: azure/k8s-deploy@v1.3        
         with:        
           manifests: |
