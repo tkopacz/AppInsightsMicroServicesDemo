@@ -59,8 +59,7 @@ jobs:
             resourceGroupName: 'AppInsightsMicroservices_RG'
             clusterName: 'aksinfra-appinsightsmicro'
         id: login
-      - name: 'Deploy API GW to AKS Cluster'
-        working-directory: ${{env.workDir}}   
+      - name: 'Deploy API GW to AKS Cluster'        
         uses: azure/k8s-deploy@v1.3        
         with:        
           manifests: |
