@@ -30,7 +30,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "alerts.default.svc.cluster.local",
-          "Port": 8080
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/alerts",
@@ -47,7 +47,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "alerts.default.svc.cluster.local",
-          "Port": 8080
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/NewAlert",
