@@ -63,7 +63,7 @@ jobs:
           manifests: |
               .AKS/deploy_apigw_pod.yaml
               .AKS/deploy_apigw_service.yaml
-          images: '${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ event.run_number }}'          
+          images: '${{ secrets.CONTAINER_REGISTRY }}/apigw:${{ github.run_number }}'          
           kubectl-version: 'latest'
         
         
