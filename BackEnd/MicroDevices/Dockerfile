@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/azure-functions/dotnet:2.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-stretch AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY ["MicroDevices/MicroDevices.csproj", "MicroDevices/"]
 RUN dotnet restore "MicroDevices/MicroDevices.csproj"
