@@ -19,7 +19,10 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "ProductionOnAKS"
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
-          value: "5928c9cf-3ad6-4b17-9087-380c4917c7aa"      
+          valueFrom:
+            secretKeyRef:
+              name: apigwsecrets # the name of the Kubernetes secret containing the data
+              key: APPINSIGHTS_INSTRUMENTATIONKEY # the key inside the Kubernetes secret containing the data      
         imagePullPolicy: Always
         ports:
         - containerPort: 80

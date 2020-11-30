@@ -19,10 +19,15 @@ spec:
         - name: ServiceBus__ConnectionString
           valueFrom:
             secretKeyRef:
-              name: servicebussecret # the name of the Kubernetes secret containing the data
+              name: alertssecrets # the name of the Kubernetes secret containing the data
               key: SERVICEBUSCONNECTIONSTRING # the key inside the Kubernetes secret containing the data
         - name: ServiceBus__TopicName
           value: "messagebus"
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          valueFrom:
+            secretKeyRef:
+              name: alertssecrets # the name of the Kubernetes secret containing the data
+              key: APPINSIGHTS_INSTRUMENTATIONKEY # the key inside the Kubernetes secret containing the data
         imagePullPolicy: Always
         ports:
         - containerPort: 80

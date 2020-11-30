@@ -51,13 +51,7 @@ jobs:
     needs: Build_and_deploy_to_ACR
     runs-on: ubuntu-latest    
     steps:
-      - uses: actions/checkout@v2
-      - name: Find and Replace ENV Variables
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "ServiceBus__ConnectionString_Value"
-          replace: ${{ secrets.SERVICE_BUS_CONNECTIONSTRING }}
-          include: "./AKS/"  
+      - uses: actions/checkout@v2        
       - name: 'Login to AKS Cluster'
         uses: azure/aks-set-context@v1
         with:
@@ -65,6 +59,12 @@ jobs:
             resource-group: 'AppInsightsMicroservices_RG'
             cluster-name: 'aksinfra-appinsightsmicro'
         id: login
+      - uses: azure/k8s-create-secret@v1
+        with:
+          namespace: 'default'
+          secret-type: 'generic'
+          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }}
+          secret-name: alertssecrets
       - name: 'Deploy ApiGW to AKS Cluster'
         uses: azure/k8s-deploy@v1.3                    
         with:        

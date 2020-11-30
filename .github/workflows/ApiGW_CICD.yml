@@ -59,6 +59,12 @@ jobs:
             resource-group: 'AppInsightsMicroservices_RG'
             cluster-name: 'aksinfra-appinsightsmicro'
         id: login
+      - uses: azure/k8s-create-secret@v1
+        with:
+          namespace: 'default'
+          secret-type: 'generic'
+          arguments:  --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }}
+          secret-name: apigwsecrets
       - name: 'Deploy ApiGW to AKS Cluster'
         uses: azure/k8s-deploy@v1.3                    
         with:        
