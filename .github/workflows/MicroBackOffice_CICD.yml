@@ -1,4 +1,4 @@
-name: CI CD - Back Office Microservice
+name: CI_CD__Back_Office_Microservice
 
 on:
   push:

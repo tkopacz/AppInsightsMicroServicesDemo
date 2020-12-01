@@ -1,4 +1,4 @@
-name: CI CD - Devices Microservice
+name: CI_CD__Devices_Microservice
 
 on:
   push:

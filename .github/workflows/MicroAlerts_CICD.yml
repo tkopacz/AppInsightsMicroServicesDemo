@@ -1,4 +1,4 @@
-name: CI CD - Alerts Microservice
+name: CI_CD__Alerts_Microservice
 
 on:
   push:
