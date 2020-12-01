@@ -22,7 +22,7 @@ spec:
               name: alertssecrets # the name of the Kubernetes secret containing the data
               key: SERVICEBUSCONNECTIONSTRING # the key inside the Kubernetes secret containing the data
         - name: ServiceBus__TopicName
-          value: "messagebus"
+          value: "messagebusaks"
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           valueFrom:
             secretKeyRef:
