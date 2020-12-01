@@ -1,12 +1,12 @@
-name: CI_CD__Back_Office_Microservice
+name: CI_CD__Devices_Microservice
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'BackEnd/MicroBOffice/**'
-      - '.github/workflows/MicroBackOffice_CICD.yml'
-      - 'AKS/deploy_backoffice**'   
+      - 'BackEnd/MicroDevices/**'
+      - '.github/workflows/v1/MicroDevices_CICD.yml'
+      - 'AKS/v1/deploy_devices**'
   pull_request:
     branches: [ main ]
 
@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       workDir: ./BackEnd
-      AZURE_FUNCTIONAPP_NAME: appinsightsmsboffice  # set this to your application's name
-      AZURE_FUNCTIONAPP_PACKAGE_PATH: './BackEnd/MicroBOffice'    # set this to the path to your web app project, defaults to the repository root
+      AZURE_FUNCTIONAPP_NAME: appinsightsmsdevices  # set this to your application's name
+      AZURE_FUNCTIONAPP_PACKAGE_PATH: './BackEnd/MicroDevices'    # set this to the path to your web app project, defaults to the repository root
       DOTNET_VERSION: '3.1.x'      
     steps:
     - uses: actions/checkout@v2    
@@ -36,17 +36,17 @@ jobs:
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.AZURE_BOFFICE_FUNCTIONAPP_PUBLISH_PROFILE }}
-    
+        publish-profile: ${{ secrets.AZURE_DEVICES_FUNCTIONAPP_PUBLISH_PROFILE }}
+  
   Build_and_deploy_to_ACR:
     runs-on: ubuntu-latest
     env:
       workDir: ./BackEnd         
     steps:
     - uses: actions/checkout@v2    
-    - name: Docker Build backoffice Microservice
+    - name: Docker Build devices Microservice
       run: |
-        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/msbackoffice:${{ github.run_number }} -f ${{env.workDir}}/MicroBOffice/Dockerfile ${{env.workDir}}
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }} -f ${{env.workDir}}/MicroDevices/Dockerfile ${{env.workDir}}
     - name: ACR authentication    
       uses: azure/docker-login@v1
       with:
@@ -55,7 +55,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}  
     - name: Docker Build & Push to ACR      
       run: |
-        docker push ${{ secrets.CONTAINER_REGISTRY }}/msbackoffice:${{ github.run_number }}
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }}
   
   Deploy_to_AKS:
     needs: Build_and_deploy_to_ACR
@@ -73,13 +73,14 @@ jobs:
         with:
           namespace: 'default'
           secret-type: 'generic'
-          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }}
-          secret-name: backofficesecrets
-      - name: 'Deploy backoffice Microservice to AKS Cluster'
+          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }} --from-literal=CosmosConnectionString=${{ secrets.CosmosConnectionString }} --from-literal=CosmosDbName=${{ secrets.CosmosDbName }} --from-literal=CosmosDbContainerName=${{ secrets.CosmosDbContainerName }} --from-literal=CosmosDbPartitionKey=${{ secrets.CosmosDbPartitionKey }}
+          secret-name: devicessecrets
+      - name: 'Deploy Devices Microservice to AKS Cluster'
         uses: azure/k8s-deploy@v1.3                    
         with:        
           manifests: |
-              ./AKS/deploy_backoffice_pod.yaml              
-          images: '${{ secrets.CONTAINER_REGISTRY }}/msbackoffice:${{ github.run_number }}'          
+              ./AKS/deploy_devices_pod.yaml
+              ./AKS/deploy_devices_service.yaml
+          images: '${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }}'          
           kubectl-version: 'latest'
         

@@ -5,8 +5,8 @@ on:
     branches: [ main ]
     paths:
       - 'BackEnd/ApiGateway/**'
-      - '.github/workflows/ApiGW_CICD.yml'
-      - 'AKS/deploy_apigw**'
+      - '.github/workflows/v1/ApiGW_CICD.yml'
+      - 'AKS/v1/deploy_apigw**'
   pull_request:
     branches: [ main ]
 
