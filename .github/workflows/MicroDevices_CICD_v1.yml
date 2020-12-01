@@ -73,7 +73,7 @@ jobs:
         with:
           namespace: 'default'
           secret-type: 'generic'
-          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }} --from-literal=CosmosConnectionString=${{ secrets.CosmosConnectionString }} --from-literal=CosmosDbName=${{ secrets.CosmosDbName }} --from-literal=CosmosDbContainerName=${{ secrets.CosmosDbContainerName }} --from-literal=CosmosDbPartitionKey=${{ secrets.CosmosDbPartitionKey }}
+          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY_DEVICES }} --from-literal=CosmosConnectionString=${{ secrets.CosmosConnectionString }} --from-literal=CosmosDbName=${{ secrets.CosmosDbName }} --from-literal=CosmosDbContainerName=${{ secrets.CosmosDbContainerName }} --from-literal=CosmosDbPartitionKey=${{ secrets.CosmosDbPartitionKey }}
           secret-name: devicessecrets
       - name: 'Deploy Devices Microservice to AKS Cluster'
         uses: azure/k8s-deploy@v1.3                    
