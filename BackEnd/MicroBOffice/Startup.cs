@@ -22,11 +22,18 @@ namespace MicroBOffice
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)
         {
-            string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
-            string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
-            TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
+            try
+            {
+                string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBus:ConnectionString");
+                string TopicName = Environment.GetEnvironmentVariable("ServiceBus:TopicName");
+                TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
-            return _topicClient;
+                return _topicClient;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to initialize Service Bus for Back Office Microservice", ex);
+            }
         }
     }
 }
