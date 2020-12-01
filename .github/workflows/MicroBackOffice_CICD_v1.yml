@@ -79,7 +79,7 @@ jobs:
         uses: azure/k8s-deploy@v1.3                    
         with:        
           manifests: |
-              ./AKS/deploy_backoffice_pod.yaml              
+              ./AKS/v1/deploy_backoffice_pod.yaml              
           images: '${{ secrets.CONTAINER_REGISTRY }}/msbackoffice:${{ github.run_number }}'          
           kubectl-version: 'latest'
         

@@ -69,8 +69,8 @@ jobs:
         uses: azure/k8s-deploy@v1.3                    
         with:        
           manifests: |
-              ./AKS/deploy_alerts_pod.yaml
-              ./AKS/deploy_alerts_service.yaml
+              ./AKS/v1/deploy_alerts_pod.yaml
+              ./AKS/v1/deploy_alerts_service.yaml
           images: '${{ secrets.CONTAINER_REGISTRY }}/msalerts:${{ github.run_number }}'          
           kubectl-version: 'latest'
         
