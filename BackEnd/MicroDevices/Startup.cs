@@ -44,8 +44,8 @@ namespace MicroDevices
         {
             try
             {
-                string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBus:ConnectionString");
-                string TopicName = Environment.GetEnvironmentVariable("ServiceBus:TopicName");
+                string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
+                string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
                 TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
                 return _topicClient;
