@@ -23,7 +23,7 @@ namespace MicroDevices
 
         private Container GetContainer(IServiceProvider options)
         {
-            var lConnectionString = Environment.GetEnvironmentVariable("CosmosConnectionString");
+            var lConnectionString = Environment.GetEnvironmentVariable("Cosmos:ConnectionString");
             var lCosmosDbName = Environment.GetEnvironmentVariable("CosmosDbName");
             var lCosmosDbContainerName = Environment.GetEnvironmentVariable("CosmosDbContainerName");
             var lCosmosDbPartionKey = Environment.GetEnvironmentVariable("CosmosDbPartitionKey");
@@ -44,8 +44,8 @@ namespace MicroDevices
         {
             try
             {
-                string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
-                string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
+                string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBus:ConnectionString");
+                string TopicName = Environment.GetEnvironmentVariable("ServiceBus:TopicName");
                 TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
 
                 return _topicClient;

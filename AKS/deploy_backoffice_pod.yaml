@@ -16,12 +16,12 @@ spec:
       - name: backoffice
         image: appinsightsdp.azurecr.io/msbackoffice:10
         env:
-        - name: ServiceBusConnectionString
+        - name: ServiceBus__ConnectionString
           valueFrom:
             secretKeyRef:
               name: backofficesecrets # the name of the Kubernetes secret containing the data
               key: SERVICEBUSCONNECTIONSTRING # the key inside the Kubernetes secret containing the data
-        - name: ServiceBusTopicName
+        - name: ServiceBus__TopicName
           value: "messagebus"
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           valueFrom:
