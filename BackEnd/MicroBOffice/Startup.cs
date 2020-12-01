@@ -15,25 +15,8 @@ namespace MicroBOffice
             builder.Services.AddLogging(loggingBuilder =>
             {
                 loggingBuilder.AddFilter(level => true);
-            });
+            });          
             
-            builder.Services.AddSingleton<ITopicClient>(GetServiceBusTopic);
-        }
-
-        private ITopicClient GetServiceBusTopic(IServiceProvider options)
-        {
-            try
-            {
-                string ServiceBusConnectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
-                string TopicName = Environment.GetEnvironmentVariable("ServiceBusTopicName");
-                TopicClient _topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
-
-                return _topicClient;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to initialize Service Bus for Back Office Microservice", ex);
-            }
-        }
+        }        
     }
 }

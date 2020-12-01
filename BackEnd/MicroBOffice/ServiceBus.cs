@@ -9,7 +9,7 @@ namespace MicroBOffice
     public static class ServiceBus
     {
         [FunctionName("BOfficeSBus")]
-        public static void Run([ServiceBusTrigger("messagebus","all", Connection = "ServiceBusConnection")]string mySbMsg, ILogger log)
+        public static void Run([ServiceBusTrigger("%ServiceBusTopicName%", "all", Connection = "ServiceBusConnection")]string mySbMsg, ILogger log)
         {
             TelemetryClient lClient = new TelemetryClient();
 
