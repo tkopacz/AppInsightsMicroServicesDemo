@@ -19,7 +19,7 @@ jobs:
     - name: Login via Az module
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS_SUB}
+        creds: ${{secrets.AZURE_CREDENTIALS_SUB}}
         enable-AzPSSession: true 
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
