@@ -10,7 +10,7 @@ on:
     branches: [ IaC ]
 
 jobs:
-  Build_and_deploy_to_AzureFunctions:
+  Create_PaaS_Infra:
     runs-on: ubuntu-latest
     env:
       scriptPath: .github/workflows/Setup_PaaS.yml      
