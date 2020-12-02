@@ -81,6 +81,7 @@ jobs:
           manifests: |
               ./AKS/v1/deploy_devices_pod.yaml
               ./AKS/v1/deploy_devices_service.yaml
+              ./AKS/v1/deploy_devices_pod_autoscale.yaml
           images: '${{ secrets.CONTAINER_REGISTRY }}/msdevices:${{ github.run_number }}'          
           kubectl-version: 'latest'
         
