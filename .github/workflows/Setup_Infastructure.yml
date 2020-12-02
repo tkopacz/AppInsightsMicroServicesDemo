@@ -11,9 +11,7 @@ on:
 
 jobs:
   Create_PaaS_Infra:
-    runs-on: ubuntu-latest
-    env:
-      scriptPath: .github/workflows/Setup_PaaS.yml      
+    runs-on: ubuntu-latest      
     steps:
     - uses: actions/checkout@v2
     - name: Login via Az module
@@ -24,3 +22,16 @@ jobs:
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
       run: IaC/PaaS_Infra.ps1
+  Create_AKS_Infra:
+    needs: Create_PaaS_Infra
+    runs-on: ubuntu-latest       
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_SUB}}
+        enable-AzPSSession: true 
+    - name: 'Run Setup PaaS powershell'
+      shell: pwsh
+      run: IaC/AKS_Infra.ps1

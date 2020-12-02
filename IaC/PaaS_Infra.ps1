@@ -1,6 +1,6 @@
 #---------------------------------------- Config Part -----------------------------------------------------------#
 # Resource Group and Azure Region variables
-$resourceGroupName = 'testiacpaas2' # $env:env_pipeline_variable_rg_name
+$resourceGroupName = 'ntestiacpaas' # $env:env_pipeline_variable_rg_name
 $azureRegion = 'westeurope' # $env:env_pipeline_variable_location''
 Write-Host "(Got from ENV): RG: " $resourceGroupName " location: "  $azureRegion 
 Write-Host "Environment Azure CL: " az --version
@@ -18,9 +18,9 @@ $serviceBusMessageBusTopicName = 'paasmessagebus'
 
 # Functions related variables
 $functionDevicesName = $resourceGroupName + 'paasdevices'
-$functionDevicesAiName ='paasdevicesai'
+$functionDevicesAiName ='paas-devicesai'
 $functionBackOfficeName = $resourceGroupName + 'paasboffice'
-$functionBackOfficeAiName ='paasbofficeai'
+$functionBackOfficeAiName ='paas-backofficeai'
 
 # Azure Container Registry variables
 $acrName = $resourceGroupName + 'acr'
@@ -29,9 +29,9 @@ $acrName = $resourceGroupName + 'acr'
 $apiGwServicePlanName = 'apigwsp'
 $alertsServicePlanName = 'alertssp'
 $apiGwWebAppName = $resourceGroupName + 'apigw'
-$apiGwAiName = 'apigwai'
+$apiGwAiName = 'paas-apigwai'
 $alertsWebAppName = $resourceGroupName + 'alerts'
-$alertsAiName = 'alertsai'
+$alertsAiName = 'paas-alertsai'
 
 #---------------------------------------- Execution Part -----------------------------------------------------------#
 
