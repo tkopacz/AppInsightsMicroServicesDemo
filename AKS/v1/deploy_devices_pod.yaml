@@ -16,10 +16,10 @@ spec:
         image: appinsightsdp.azurecr.io/msdevices:10
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "1000m"
+            memory: "500Mi"
+            cpu: "500m"
           limits:
-            memory: "128Mi"
+            memory: "500Mi"
             cpu: "1000m"
         env:
         - name: ServiceBusConnectionString
