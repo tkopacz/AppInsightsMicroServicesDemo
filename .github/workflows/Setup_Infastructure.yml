@@ -25,7 +25,10 @@ jobs:
       run: IaC/PaaS_Infra.ps1
   Create_AKS_Infra:
     needs: Create_PaaS_Infra
-    runs-on: ubuntu-latest       
+    env:
+      SP_ID: ${{secrets.AKS_SERVICE_PRINCIPAL_ID}}    
+      SP_SECRET: ${{secrets.AKS_SERVICE_PRINCIPAL_SECRET}}    
+    runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@v2
     - name: Login via Az module
