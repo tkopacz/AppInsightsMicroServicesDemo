@@ -14,27 +14,34 @@ jobs:
   Create_PaaS_Infra:
     runs-on: ubuntu-latest
     env:
-      RESOURSE_GROUP_NAME: 'ntestiacpaas'
+      RESOURSE_GROUP_NAME: 'newtestiacpaas'
       AZURE_REGION: 'westeurope'
     steps:
     - uses: actions/checkout@v2
     - name: Login via Az module
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS_SUB}}
+        creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true 
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
       run: IaC/PaaS_Infra.ps1
-    - uses: gliech/create-github-secret-action@v1
+    - name: 'Create GitHub Secret for Cosmos for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
       with:
-        name: NEW_COSMOS_CON
+        name: AKS_COSMOS_CONNECTIONSTRING
         value: ${{env.TMP_COSMOS_CON}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for Service Bus for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_SERVICE_BUS_CONNECTIONSTRING
+        value: ${{env.TMP_SERVICEBUS_CON}}
         pa_token: ${{ secrets.PA_TOKEN }}
   Create_AKS_Infra:
     needs: Create_PaaS_Infra
     env:
-      RESOURSE_GROUP_NAME: 'ntestiacpaas'
+      RESOURSE_GROUP_NAME: 'newtestiacpaas'
       AZURE_REGION: 'westeurope'
       SP_ID: ${{secrets.AKS_SERVICE_PRINCIPAL_ID}}    
       SP_SECRET: ${{secrets.AKS_SERVICE_PRINCIPAL_SECRET}}    
@@ -44,8 +51,32 @@ jobs:
     - name: Login via Az module
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS_SUB}}
+        creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true 
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
       run: IaC/AKS_Infra.ps1
+    - name: 'Create GitHub Secret for AKS ApiGW AI Key'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_APIGW_AI_KEY
+        value: ${{env.TMP_AKS_AI_APIGW}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for AKS Alerts AI Key'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_ALERTS_AI_KEY
+        value: ${{env.TMP_AKS_AI_ALERTS}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for AKS Devices AI Key'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_DEVICES_AI_KEY
+        value: ${{env.TMP_AKS_AI_DEVICES}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for AKS Back Office AI Key'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_BACK_OFFICE_AI_KEY
+        value: ${{env.TMP_AKS_AI_BACK_OFFICE}}
+        pa_token: ${{ secrets.PA_TOKEN }}

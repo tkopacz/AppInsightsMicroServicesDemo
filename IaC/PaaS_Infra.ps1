@@ -128,4 +128,6 @@ az webapp config appsettings set --name $apiGwWebAppName --resource-group $resou
 az webapp config appsettings set --name $alertsWebAppName --resource-group $resourceGroupName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$alertsAiKey"
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
+# Connection Strings, Cosmos and Service Bus - this needed for AKS Infra, as for PaaS it is passed on Web app and Functions configuration variables
 Write-Output "TMP_COSMOS_CON=$cosmosConString" >> $GITHUB_ENV
+Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" >> $GITHUB_ENV

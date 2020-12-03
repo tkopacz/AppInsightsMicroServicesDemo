@@ -74,3 +74,11 @@ az resource create --resource-type Microsoft.OperationalInsights/workspaces --na
 $WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group $resourceGroupName --name $WORKSPACE --query "id" -o tsv)
 
 az aks enable-addons --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --addons monitoring --workspace-resource-id $WORKSPACE_ID
+
+
+# Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
+# Application Insights Keys
+Write-Output "TMP_AKS_AI_APIGW=$apiGwAiKey" >> $GITHUB_ENV
+Write-Output "TMP_AKS_AI_ALERTS=$alertsAiKey" >> $GITHUB_ENV
+Write-Output "TMP_AKS_AI_DEVICES=$devicesAiKey" >> $GITHUB_ENV
+Write-Output "TMP_AKS_AI_BACK_OFFICE=$backofficeAiKey" >> $GITHUB_ENV
