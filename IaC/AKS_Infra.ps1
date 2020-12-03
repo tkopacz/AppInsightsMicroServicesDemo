@@ -63,7 +63,7 @@ $VERSION=$(az aks get-versions --location $azureRegion --query 'orchestrators[?!
 
 # Create AKS Cluster
 Write-Host 'About to create AKS Cluster: ' $AKS_CLUSTER_NAME -ForegroundColor Green
-az aks create --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --vm-set-type VirtualMachineScaleSets --node-count 2 --load-balancer-sku standard --location $REGION_NAME --kubernetes-version $VERSION --network-plugin azure --vnet-subnet-id $SUBNET_ID --service-cidr 10.2.0.0/24 --dns-service-ip 10.2.0.10 --docker-bridge-address 172.17.0.1/16 --generate-ssh-keys
+az aks create --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --vm-set-type VirtualMachineScaleSets --node-count 2 --load-balancer-sku standard --location $azureRegion --kubernetes-version $VERSION --network-plugin azure --vnet-subnet-id $SUBNET_ID --service-cidr 10.2.0.0/24 --dns-service-ip 10.2.0.10 --docker-bridge-address 172.17.0.1/16 --generate-ssh-keys
 
 # Attach Azure Container Registry
 az aks update --name $AKS_CLUSTER_NAME --resource-group $resourceGroupName --attach-acr $acrName
