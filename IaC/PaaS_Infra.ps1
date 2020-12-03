@@ -139,6 +139,7 @@ Write-Output "TMP_COSMOS_CON=$cosmosConString" >> $GITHUB_ENV
 Write-Output "TMP_COSMOS_DB_NAME=$cosmosDbName" >> $GITHUB_ENV
 Write-Output "TMP_COSMOS_CONTAINER_NAME=$cosmosDbContainerName" >> $GITHUB_ENV
 Write-Output "TMP_COSMOS_PARTITION_KEY=$cosmosDbPartitionKey" >> $GITHUB_ENV
-Write-Host "TMP_ACR_NAME=$acrName" | out-file $GITHUB_ENV -encoding utf8
+Write-Output "TMP_ACR_NAME=$acrName" | out-file $GITHUB_ENV -encoding utf8
+Write-Output "TMP_ACR_USER_NAME=$acrUserName" | out-file $GITHUB_ENV -encoding utf8
 
 # Write-Output "TMP_ACR_PASSWORD=$acrPassword" >> $GITHUB_ENV
