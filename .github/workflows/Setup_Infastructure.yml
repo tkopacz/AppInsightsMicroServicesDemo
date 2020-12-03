@@ -75,7 +75,7 @@ jobs:
         value: ${{env.TMP_ACR_PASSWORD}}
         pa_token: ${{ secrets.PA_TOKEN }}
   Create_AKS_Infra:
-    needs: Create_AKS_Infra
+    needs: Create_PaaS_Infra
     env:
       RESOURSE_GROUP_NAME: 'newtestiacpaas'
       AZURE_REGION: 'westeurope'
