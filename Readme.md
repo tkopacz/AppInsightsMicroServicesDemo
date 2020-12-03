@@ -1,6 +1,6 @@
 # Starting with
 
-You will need two Service Principals, one for running all workflows and one for running the AKS Cluster with Role Based Access Control RBAC. These two can be the same.
+You will need two Service Principals, one for running all workflows and one for running the AKS Cluster with Role Based Access Control RBAC. These two can be the same one.
 
 step 1:
  az ad sp create-for-rbac -n "GitHubdeploySP" --sdk-auth --role contributor
@@ -13,11 +13,16 @@ step 1:
  2. AKS_SERVICE_PRINCIPAL_ID: ClientId value from step 1
  3. AKS_SERVICE_PRINCIPAL_SECRET: clientSecret value from step 1
 
+ step 2:
+ Run Setup_Infrastructure.yml (after changing RESOURSE_GROUP_NAME and AZURE_REGION to your desired naming)
+-> This should do the following:
+1. Create the PaaS infrstructure - all config values should be passed to Web Apps and Azure Functions
+2. Create AKS Infrastructure
+3. Create GitHub Secrets to be used for the AKS CI/CD Pipelines
+
+
 # SECRETS NEEDED
 ## PaaS
 
 1. Four publishing profiles for Api gateway, Alerts microservice, Devices microservice, Back office microservice
-    a. PAAS_PUBLISH_PROFILE_APIGW
-    b. PAAS_PUBLISH_PROFILE_ALERTS
-    c. PAAS_PUBLISH_PROFILE_DEVICES
-    d. PAAS_PUBLISH_PROFILE_BACK_OFFICE
+    

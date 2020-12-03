@@ -30,13 +30,16 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.AZURE_BOFFICE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'        
     
   Build_and_deploy_to_ACR:
     runs-on: ubuntu-latest
@@ -73,7 +76,7 @@ jobs:
         with:
           namespace: 'default'
           secret-type: 'generic'
-          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY_BACKOFFICE }}
+          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.AKS_SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.AKS_BACK_OFFICE_AI_KEY }}
           secret-name: backofficesecrets
       - name: 'Deploy backoffice Microservice to AKS Cluster'
         uses: azure/k8s-deploy@v1.3                    

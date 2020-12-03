@@ -26,20 +26,56 @@ jobs:
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
       run: IaC/PaaS_Infra.ps1
-    - name: 'Create GitHub Secret for Cosmos for CI/CD pipelines'
-      uses: gliech/create-github-secret-action@v1
-      with:
-        name: AKS_COSMOS_CONNECTIONSTRING
-        value: ${{env.TMP_COSMOS_CON}}
-        pa_token: ${{ secrets.PA_TOKEN }}
     - name: 'Create GitHub Secret for Service Bus for CI/CD pipelines'
       uses: gliech/create-github-secret-action@v1
       with:
         name: AKS_SERVICE_BUS_CONNECTIONSTRING
         value: ${{env.TMP_SERVICEBUS_CON}}
         pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for Cosmos for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_COSMOS_CONNECTIONSTRING
+        value: ${{env.TMP_COSMOS_CON}}
+        pa_token: ${{ secrets.PA_TOKEN }}    
+    - name: 'Create GitHub Secret for Cosmos Db name for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_COSMOS_DB_NAME
+        value: ${{env.TMP_COSMOS_DB_NAME}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for Cosmos Container name for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_COSMOS_CONTAINER_NAME
+        value: ${{env.TMP_COSMOS_CONTAINER_NAME}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for Cosmos Partition key name for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_COSMOS_PARTITION_KEY
+        value: ${{env.TMP_COSMOS_PARTITION_KEY}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for ACR for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: CONTAINER_REGISTRY
+        value: ${{env.TMP_ACR_NAME}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for ACR Username for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: REGISTRY_USERNAME
+        value: ${{env.TMP_ACR_USER_NAME}}
+        pa_token: ${{ secrets.PA_TOKEN }}
+    - name: 'Create GitHub Secret for ACR password for CI/CD pipelines'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: REGISTRY_PASSWORD
+        value: ${{env.TMP_ACR_PASSWORD}}
+        pa_token: ${{ secrets.PA_TOKEN }}
   Create_AKS_Infra:
-    needs: Create_PaaS_Infra
+    needs: Create_AKS_Infra
     env:
       RESOURSE_GROUP_NAME: 'newtestiacpaas'
       AZURE_REGION: 'westeurope'

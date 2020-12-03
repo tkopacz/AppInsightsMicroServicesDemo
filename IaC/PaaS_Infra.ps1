@@ -61,6 +61,8 @@ $cosmosConString = "AccountEndpoint=https://"+$cosmosDbAccount+".documents.azure
 # Create Azure Container Registry
 Write-Host 'About to create Azure Container Registry: ' $acrName
 az acr create -n $acrName -g $resourceGroupName --sku Standard --admin-enabled true
+$acrUserName = $(az acr credential show -n $acrName --query username)
+$acrPassword = $(az acr credential show -n $acrName --query passwords[0].value)
 
 # Create the storage account to be used for Functions
 Write-Host 'About to create storage: ' $storageAccountName -ForegroundColor Green
@@ -127,7 +129,16 @@ Write-Host 'About to set AI Keys for Web Apps: ' $apiGwWebAppName ',  ' $alertsW
 az webapp config appsettings set --name $apiGwWebAppName --resource-group $resourceGroupName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$apiGwAiKey"
 az webapp config appsettings set --name $alertsWebAppName --resource-group $resourceGroupName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$alertsAiKey"
 
+Write-Host 'About to set ASPNETCORE_ENVIRONMENT for ApiGW: ' $apiGwWebAppName -ForegroundColor Green
+az webapp config appsettings set --name $apiGwWebAppName --resource-group $resourceGroupName --settings "ASPNETCORE_ENVIRONMENT=ProductionOnAzure"
+
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
 # Connection Strings, Cosmos and Service Bus - this needed for AKS Infra, as for PaaS it is passed on Web app and Functions configuration variables
-Write-Output "TMP_COSMOS_CON=$cosmosConString" >> $GITHUB_ENV
 Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" >> $GITHUB_ENV
+Write-Output "TMP_COSMOS_CON=$cosmosConString" >> $GITHUB_ENV
+Write-Output "TMP_COSMOS_DB_NAME=$cosmosDbName" >> $GITHUB_ENV
+Write-Output "TMP_COSMOS_CONTAINER_NAME=$cosmosDbContainerName" >> $GITHUB_ENV
+Write-Output "TMP_COSMOS_PARTITION_KEY=$cosmosDbPartitionKey" >> $GITHUB_ENV
+Write-Output "TMP_ACR_NAME=$acrName" >> $GITHUB_ENV
+Write-Output "TMP_ACR_USER_NAME=$acrUserName" >> $GITHUB_ENV
+Write-Output "TMP_ACR_PASSWORD=$acrPassword" >> $GITHUB_ENV
