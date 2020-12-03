@@ -1,7 +1,7 @@
 #---------------------------------------- Config Part -----------------------------------------------------------#
 # Resource Group and Azure Region variables
-$resourceGroupName = 'ntestiacpaas' # $env:env_pipeline_variable_rg_name
-$azureRegion = 'westeurope' # $env:env_pipeline_variable_location''
+$resourceGroupName = $env:RESOURSE_GROUP_NAME
+$azureRegion = $env:AZURE_REGION
 Write-Host "(Got from ENV): RG: " $resourceGroupName " location: "  $azureRegion 
 Write-Host "Environment Azure CL: " az --version
 
@@ -13,8 +13,9 @@ $cosmosDbContainerName = 'Devices'
 $cosmosDbPartitionKey = '/category'
 
 # Service Bus Related variables
-$serviceBusNameSpace = 'paas-service-bus'
-$serviceBusMessageBusTopicName = 'paasmessagebus'
+$serviceBusNameSpace = 'paasNaks-service-bus'
+$serviceBusMessageBusTopicNamePaaS = 'paasmessagebus'
+$serviceBusMessageBusTopicNameAks = 'aksmessagebus'
 
 # Functions related variables
 $functionDevicesName = $resourceGroupName + 'paasdevices'
@@ -40,10 +41,12 @@ Write-Host 'About to create resourse group: ' $resourceGroupName -ForegroundColo
 az group create -l $azureRegion -n $resourceGroupName
 
 # Create the Service Bus
-Write-Host 'About to create Service Bus: ' $serviceBusNameSpace ', ' $serviceBusMessageBusTopicName  -ForegroundColor Green
+Write-Host 'About to create Service Bus: ' $serviceBusNameSpace ', ' $serviceBusMessageBusTopicNamePaaS ', ' $serviceBusMessageBusTopicNameAks  -ForegroundColor Green
 az servicebus namespace create --resource-group $resourceGroupName --name $serviceBusNameSpace --location $azureRegion
-az servicebus topic create --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --name $serviceBusMessageBusTopicName
-az servicebus topic subscription create --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --topic-name $serviceBusMessageBusTopicName --name 'all'
+az servicebus topic create --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --name $serviceBusMessageBusTopicNamePaaS
+az servicebus topic subscription create --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --topic-name $serviceBusMessageBusTopicNamePaaS --name 'all'
+az servicebus topic create --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --name $serviceBusMessageBusTopicNameAks
+az servicebus topic subscription create --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --topic-name $serviceBusMessageBusTopicNameAks --name 'all'
 $serviceBusConnectionString = az servicebus namespace authorization-rule keys list --resource-group $resourceGroupName --namespace-name $serviceBusNameSpace --name RootManageSharedAccessKey --query primaryConnectionString --output tsv
 
 # Create the Cosmos Db
@@ -103,13 +106,13 @@ az functionapp config appsettings set --name $functionDevicesName --resource-gro
 az functionapp config appsettings set --name $functionDevicesName --resource-group $resourceGroupName --settings "CosmosDbContainerName=$cosmosDbContainerName"
 az functionapp config appsettings set --name $functionDevicesName --resource-group $resourceGroupName --settings "CosmosDbPartitionKey=$cosmosDbPartitionKey"
 az functionapp config appsettings set --name $functionDevicesName --resource-group $resourceGroupName --settings "ServiceBusConnectionString=$serviceBusConnectionString"
-az functionapp config appsettings set --name $functionDevicesName --resource-group $resourceGroupName --settings "ServiceBusTopicName=$serviceBusMessageBusTopicName"
+az functionapp config appsettings set --name $functionDevicesName --resource-group $resourceGroupName --settings "ServiceBusTopicName=$serviceBusMessageBusTopicNamePaaS"
 
 # Create Azure Function for Back Office
 Write-Host 'About to create Back Office function: ' $functionBackOfficeName -ForegroundColor Green
 az functionapp create -c $azureRegion -n $functionBackOfficeName --os-type Linux -g $resourceGroupName --runtime dotnet -s $storageAccountName --app-insights $functionBackOfficeAiName --app-insights-key $functionBackOfficeAiKey
 az functionapp config appsettings set --name $functionBackOfficeName --resource-group $resourceGroupName --settings "ServiceBusConnectionString=$serviceBusConnectionString"
-az functionapp config appsettings set --name $functionBackOfficeName --resource-group $resourceGroupName --settings "ServiceBusTopicName=$serviceBusMessageBusTopicName"
+az functionapp config appsettings set --name $functionBackOfficeName --resource-group $resourceGroupName --settings "ServiceBusTopicName=$serviceBusMessageBusTopicNamePaaS"
 
 # Create Web Apps for Api Gateway and Alerts
 Write-Host 'About to create App Service Plans: ' $apiGwServicePlanName ',  ' $alertsServicePlanName -ForegroundColor Green
@@ -123,3 +126,6 @@ az webapp create -g $resourceGroupName -p $alertsServicePlanName -n $alertsWebAp
 Write-Host 'About to set AI Keys for Web Apps: ' $apiGwWebAppName ',  ' $alertsWebAppName -ForegroundColor Green
 az webapp config appsettings set --name $apiGwWebAppName --resource-group $resourceGroupName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$apiGwAiKey"
 az webapp config appsettings set --name $alertsWebAppName --resource-group $resourceGroupName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$alertsAiKey"
+
+# Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
+Write-Output "TMP_COSMOS_CON=$cosmosConString" >> $GITHUB_ENV

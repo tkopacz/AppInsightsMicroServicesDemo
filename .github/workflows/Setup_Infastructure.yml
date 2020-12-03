@@ -1,4 +1,4 @@
-name: CI_CD__Devices_Microservice
+name: IaC_Setup_infrastructure
 
 on:
   push:
@@ -12,7 +12,10 @@ on:
 
 jobs:
   Create_PaaS_Infra:
-    runs-on: ubuntu-latest      
+    runs-on: ubuntu-latest
+    env:
+      RESOURSE_GROUP_NAME: 'ntestiacpaas'
+      AZURE_REGION: 'westeurope'
     steps:
     - uses: actions/checkout@v2
     - name: Login via Az module
@@ -23,9 +26,16 @@ jobs:
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
       run: IaC/PaaS_Infra.ps1
+    - uses: gliech/create-github-secret-action@v1
+      with:
+        name: NEW_COSMOS_CON
+        value: ${{env.TMP_COSMOS_CON}}
+        pa_token: ${{ secrets.PA_TOKEN }}
   Create_AKS_Infra:
     needs: Create_PaaS_Infra
     env:
+      RESOURSE_GROUP_NAME: 'ntestiacpaas'
+      AZURE_REGION: 'westeurope'
       SP_ID: ${{secrets.AKS_SERVICE_PRINCIPAL_ID}}    
       SP_SECRET: ${{secrets.AKS_SERVICE_PRINCIPAL_SECRET}}    
     runs-on: ubuntu-latest    
