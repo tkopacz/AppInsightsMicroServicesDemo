@@ -1,7 +1,7 @@
 #---------------------------------------- Config Part -----------------------------------------------------------#
 
 # Resource Group and Azure Region variables
-$resourceGroupName = $env:RESOURSE_GROUP_NAME
+$resourceGroupName = $env:RESOURCE_GROUP_NAME
 $azureRegion = $env:AZURE_REGION
 Write-Host "(Got from ENV): RG: " $resourceGroupName " location: "  $azureRegion 
 Write-Host "Environment Azure CL: " az --version
@@ -82,3 +82,4 @@ Write-Output "TMP_AKS_AI_APIGW=$apiGwAiKey" >> $GITHUB_ENV
 Write-Output "TMP_AKS_AI_ALERTS=$alertsAiKey" >> $GITHUB_ENV
 Write-Output "TMP_AKS_AI_DEVICES=$devicesAiKey" >> $GITHUB_ENV
 Write-Output "TMP_AKS_AI_BACK_OFFICE=$backofficeAiKey" >> $GITHUB_ENV
+Write-Output "TMP_AKS_CLUSTER_NAME=$AKS_CLUSTER_NAME" >> $GITHUB_ENV

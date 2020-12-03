@@ -1,6 +1,6 @@
 #---------------------------------------- Config Part -----------------------------------------------------------#
 # Resource Group and Azure Region variables
-$resourceGroupName = $env:RESOURSE_GROUP_NAME
+$resourceGroupName = $env:RESOURCE_GROUP_NAME
 $azureRegion = $env:AZURE_REGION
 Write-Host "(Got from ENV): RG: " $resourceGroupName " location: "  $azureRegion 
 Write-Host "Environment Azure CL: " az --version
