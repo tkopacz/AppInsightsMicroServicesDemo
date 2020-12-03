@@ -2,13 +2,13 @@ name: IaC_Setup_infrastructure
 
 on:
   push:
-    branches: [ IaC ]
+    branches: [ master ]
     paths:      
       - '.github/workflows/Setup_PaaS.yml'
       - 'IaC/PaaS_Infra.ps1' 
       - 'IaC/AKS_Infra.ps1'
   pull_request:
-    branches: [ IaC ]
+    branches: [ master ]
 
 jobs:
   Create_PaaS_Infra:
