@@ -28,7 +28,8 @@ jobs:
       run: IaC/PaaS_Infra.ps1
     - name: 'TEST ENV VAR'
       shell: pwsh
-       run: 'dir env:'
+      run: | 
+        dir env:
     - name: 'Create GitHub Secret for Service Bus for CI/CD pipelines'
       uses: gliech/create-github-secret-action@v1
       with:
