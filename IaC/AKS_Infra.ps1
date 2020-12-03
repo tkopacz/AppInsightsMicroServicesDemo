@@ -71,6 +71,6 @@ az aks update --name $AKS_CLUSTER_NAME --resource-group $resourceGroupName --att
 
 az resource create --resource-type Microsoft.OperationalInsights/workspaces --name $WORKSPACE --resource-group $resourceGroupName --location $azureRegion --properties '{}' -o table
 
-$WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group webinar_oct20_rg --name $WORKSPACE --query "id" -o tsv)
+$WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group $resourceGroupName --name $WORKSPACE --query "id" -o tsv)
 
 az aks enable-addons --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --addons monitoring --workspace-resource-id $WORKSPACE_ID
