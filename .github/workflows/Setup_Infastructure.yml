@@ -30,10 +30,10 @@ jobs:
       shell: pwsh
       run: | 
         dir env:
-        echo 0  $TMP_AKS_AI_APIGW        
+        echo 0  $TMP_ACR_NAME        
         echo 1 $TMP_ACR_NAME
         echo 2 $TMP_ACR_USER_NAME
-        echo 3 $env:TMP_AKS_AI_APIGW
+        echo 3 $env:TMP_ACR_NAME
         echo 4 $env:TMP_ACR_USER_NAME
     - name: 'Create GitHub Secret for Service Bus for CI/CD pipelines'
       uses: gliech/create-github-secret-action@v1
