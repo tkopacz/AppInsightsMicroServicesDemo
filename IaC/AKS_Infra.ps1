@@ -1,4 +1,5 @@
 #---------------------------------------- Config Part -----------------------------------------------------------#
+
 # Resource Group and Azure Region variables
 $resourceGroupName = 'ntestiacpaas' # $env:env_pipeline_variable_rg_name
 $azureRegion = 'westeurope' # $env:env_pipeline_variable_location''

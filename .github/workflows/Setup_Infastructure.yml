@@ -6,6 +6,7 @@ on:
     paths:      
       - '.github/workflows/Setup_PaaS.yml'
       - 'IaC/PaaS_Infra.ps1' 
+      - 'IaC/AKS_Infra.ps1'
   pull_request:
     branches: [ IaC ]
 
