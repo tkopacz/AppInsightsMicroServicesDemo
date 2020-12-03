@@ -134,12 +134,11 @@ az webapp config appsettings set --name $apiGwWebAppName --resource-group $resou
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
 # Connection Strings, Cosmos and Service Bus - this needed for AKS Infra, as for PaaS it is passed on Web app and Functions configuration variables
-Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" >> $env:GITHUB_ENV
-Write-Output "TMP_COSMOS_CON=$cosmosConString" >> $env:GITHUB_ENV
-Write-Output "TMP_COSMOS_DB_NAME=$cosmosDbName" >> $env:GITHUB_ENV
-Write-Output "TMP_COSMOS_CONTAINER_NAME=$cosmosDbContainerName" >> $env:GITHUB_ENV
-Write-Output "TMP_COSMOS_PARTITION_KEY=$cosmosDbPartitionKey" >> $env:GITHUB_ENV
+Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" | out-file $env:GITHUB_ENV -encoding utf8
+Write-Output "TMP_COSMOS_CON=$cosmosConString" | out-file $env:GITHUB_ENV -encoding utf8
+Write-Output "TMP_COSMOS_DB_NAME=$cosmosDbName" | out-file $env:GITHUB_ENV -encoding utf8
+Write-Output "TMP_COSMOS_CONTAINER_NAME=$cosmosDbContainerName" | out-file $env:GITHUB_ENV -encoding utf8
+Write-Output "TMP_COSMOS_PARTITION_KEY=$cosmosDbPartitionKey" | out-file $env:GITHUB_ENV -encoding utf8
 Write-Output "TMP_ACR_NAME=$acrName" >> $env:GITHUB_ENV -encoding utf8
 Write-Output "TMP_ACR_USER_NAME=$acrUserName" | out-file $env:GITHUB_ENV -encoding utf8
-
-# Write-Output "TMP_ACR_PASSWORD=$acrPassword" >> $GITHUB_ENV
+Write-Output "TMP_ACR_PASSWORD=$acrPassword" | out-file $env:GITHUB_ENV -encoding utf8
