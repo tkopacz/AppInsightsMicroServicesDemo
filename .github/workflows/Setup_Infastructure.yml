@@ -25,6 +25,10 @@ jobs:
         enable-AzPSSession: true 
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
+      run: |
+        Get-Item Env:TMP_ACR_NAME
+    - name: 'TEST ENV VAR'
+      shell: pwsh
       run: IaC/PaaS_Infra.ps1
     - name: 'Create GitHub Secret for Service Bus for CI/CD pipelines'
       uses: gliech/create-github-secret-action@v1
