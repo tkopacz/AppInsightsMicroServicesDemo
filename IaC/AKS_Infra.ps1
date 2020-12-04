@@ -75,7 +75,15 @@ az resource create --resource-type Microsoft.OperationalInsights/workspaces --na
 $WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group $resourceGroupName --name $WORKSPACE --query "id" -o tsv)
 
 # Enable Monitoring Add On, use no wait in order for the script not to fail the second time it runs
-az aks enable-addons --no-wait --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --addons monitoring --workspace-resource-id $WORKSPACE_ID
+
+Write-Host 'About to enable monitoring plugin for AKS Cluster: ' $AKS_CLUSTER_NAME -ForegroundColor Green
+try {
+    az aks enable-addons --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --addons monitoring --workspace-resource-id $WORKSPACE_ID
+ } 
+ catch {
+     Write-Host "Monitoring pluging (probably) already there...moving on..." -ForegroundColor Red
+ }
+
 
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
