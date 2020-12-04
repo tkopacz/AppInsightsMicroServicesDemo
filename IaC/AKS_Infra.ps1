@@ -69,11 +69,13 @@ az aks create --service-principal $env:SP_ID --client-secret $env:SP_SECRET --re
 # Attach Azure Container Registry
 az aks update --name $AKS_CLUSTER_NAME --resource-group $resourceGroupName --attach-acr $acrName
 
+# Enable Monitoring
 az resource create --resource-type Microsoft.OperationalInsights/workspaces --name $WORKSPACE --resource-group $resourceGroupName --location $azureRegion --properties '{}' -o table
 
 $WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group $resourceGroupName --name $WORKSPACE --query "id" -o tsv)
 
-az aks enable-addons --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --addons monitoring --workspace-resource-id $WORKSPACE_ID
+# Enable Monitoring Add On, use no wait in order for the script not to fail the second time it runs
+az aks enable-addons --no-wait --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --addons monitoring --workspace-resource-id $WORKSPACE_ID
 
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
