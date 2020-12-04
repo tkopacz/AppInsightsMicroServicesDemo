@@ -142,3 +142,7 @@ Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" | Out-File -FilePa
 #Write-Output "TMP_ACR_NAME=$acrName" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 #Write-Output "TMP_ACR_USER_NAME=$acrUserName" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 #Write-Output "TMP_ACR_PASSWORD=$acrPassword" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+
+
+Write-Output '::set-output name=TMP_COSMOS_CON::'$cosmosConString
