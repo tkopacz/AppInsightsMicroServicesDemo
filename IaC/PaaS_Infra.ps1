@@ -145,3 +145,5 @@ $acrName = $acrName + ".azurecr.io"
 Write-Output "::set-output name=TMP_ACR_NAME::$acrName"
 Write-Output "::set-output name=TMP_ACR_USER_NAME::$acrUserName"
 Write-Output "::set-output name=TMP_ACR_PASSWORD::$acrPassword"
+
+Write-Output $acrName ", " $acrUserName ", " $acrPassword
