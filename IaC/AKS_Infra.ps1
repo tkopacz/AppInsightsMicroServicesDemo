@@ -85,7 +85,6 @@ try {
  }
 
 
-
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
 # Application Insights Keys
 Write-Output "::set-output name=TMP_AKS_RESOURCE_GROUP::$resourceGroupName"
