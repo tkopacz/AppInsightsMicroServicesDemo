@@ -134,7 +134,7 @@ az webapp config appsettings set --name $apiGwWebAppName --resource-group $resou
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
 # Connection Strings, Cosmos and Service Bus - this needed for AKS Infra, as for PaaS it is passed on Web app and Functions configuration variables
-Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
 Write-Output "TMP_COSMOS_CON=$cosmosConString" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 Write-Output "TMP_COSMOS_DB_NAME=$cosmosDbName" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 Write-Output "TMP_COSMOS_CONTAINER_NAME=$cosmosDbContainerName" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
