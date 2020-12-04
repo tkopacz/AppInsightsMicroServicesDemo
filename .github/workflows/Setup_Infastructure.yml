@@ -5,8 +5,7 @@ on:
     branches: [ main ]
     paths:      
       - '.github/workflows/Setup_Infastructure.yml'
-      - 'IaC/PaaS_Infra.ps1' 
-      - 'IaC/AKS_Infra.ps1'
+      - 'IaC/**'      
   pull_request:
     branches: [ main ]
 
