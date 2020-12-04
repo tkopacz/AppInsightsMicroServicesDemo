@@ -93,39 +93,40 @@ jobs:
     - name: 'Run Setup PaaS powershell'
       shell: pwsh
       run: IaC/AKS_Infra.ps1
+      id: SetupAKS
+    - name: 'Create GitHub Secret for AKS Resource Group'
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: AKS_RESOURCE_GROUP_NAME
+        value: ${{ steps.SetupAKS.outputs.TMP_AKS_RESOURCE_GROUP }}
+        pa_token: ${{ secrets.PA_TOKEN }}
     - name: 'Create GitHub Secret for AKS ApiGW AI Key'
       uses: gliech/create-github-secret-action@v1
       with:
         name: AKS_APIGW_AI_KEY
-        value: ${{env.TMP_AKS_AI_APIGW}}
+        value: ${{ steps.SetupAKS.outputs.TMP_AKS_AI_APIGW }}
         pa_token: ${{ secrets.PA_TOKEN }}
     - name: 'Create GitHub Secret for AKS Alerts AI Key'
       uses: gliech/create-github-secret-action@v1
       with:
         name: AKS_ALERTS_AI_KEY
-        value: ${{env.TMP_AKS_AI_ALERTS}}
+        value: ${{ steps.SetupAKS.outputs.TMP_AKS_AI_ALERTS }}
         pa_token: ${{ secrets.PA_TOKEN }}
     - name: 'Create GitHub Secret for AKS Devices AI Key'
       uses: gliech/create-github-secret-action@v1
       with:
         name: AKS_DEVICES_AI_KEY
-        value: ${{env.TMP_AKS_AI_DEVICES}}
+        value: ${{ steps.SetupAKS.outputs.TMP_AKS_AI_DEVICES }}
         pa_token: ${{ secrets.PA_TOKEN }}
     - name: 'Create GitHub Secret for AKS Back Office AI Key'
       uses: gliech/create-github-secret-action@v1
       with:
         name: AKS_BACK_OFFICE_AI_KEY
-        value: ${{env.TMP_AKS_AI_BACK_OFFICE}}
-        pa_token: ${{ secrets.PA_TOKEN }}
-    - name: 'Create GitHub Secret for AKS Resource Group'
-      uses: gliech/create-github-secret-action@v1
-      with:
-        name: AKS_RESOURCE_GROUP_NAME
-        value: ${{env.RESOURCE_GROUP_NAME}}
-        pa_token: ${{ secrets.PA_TOKEN }}
+        value: ${{ steps.SetupAKS.outputs.TMP_AKS_AI_BACK_OFFICE }}
+        pa_token: ${{ secrets.PA_TOKEN }}    
     - name: 'Create GitHub Secret for AKS Resource Group'
       uses: gliech/create-github-secret-action@v1
       with:
         name: AKS_CLUSTER_NAME
-        value: ${{env.TMP_AKS_CLUSTER_NAME}}
+        value: ${{ steps.SetupAKS.outputs.TMP_AKS_CLUSTER_NAME }}
         pa_token: ${{ secrets.PA_TOKEN }}

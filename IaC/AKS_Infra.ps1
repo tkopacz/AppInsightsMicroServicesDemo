@@ -78,8 +78,9 @@ az aks enable-addons --resource-group $resourceGroupName --name $AKS_CLUSTER_NAM
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
 # Application Insights Keys
-Write-Output "TMP_AKS_AI_APIGW=$apiGwAiKey" | out-file $GITHUB_ENV -encoding utf8
-Write-Output "TMP_AKS_AI_ALERTS=$alertsAiKey" >> $GITHUB_ENV
-Write-Output "TMP_AKS_AI_DEVICES=$devicesAiKey" >> $GITHUB_ENV
-Write-Output "TMP_AKS_AI_BACK_OFFICE=$backofficeAiKey" >> $GITHUB_ENV
-Write-Output "TMP_AKS_CLUSTER_NAME=$AKS_CLUSTER_NAME" >> $GITHUB_ENV
+Write-Output "::set-output name=TMP_AKS_RESOURCE_GROUP::$resourceGroupName"
+Write-Output "::set-output name=TMP_AKS_AI_APIGW::$apiGwAiKey"
+Write-Output "::set-output name=TMP_AKS_AI_ALERTS::$alertsAiKey"
+Write-Output "::set-output name=TMP_AKS_AI_DEVICES::$devicesAiKey"
+Write-Output "::set-output name=TMP_AKS_AI_BACK_OFFICE::$backofficeAiKey"
+Write-Output "::set-output name=TMP_AKS_CLUSTER_NAME::$AKS_CLUSTER_NAME"

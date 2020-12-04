@@ -61,8 +61,8 @@ $cosmosConString = "AccountEndpoint=https://"+$cosmosDbAccount+".documents.azure
 # Create Azure Container Registry
 Write-Host 'About to create Azure Container Registry: ' $acrName
 az acr create -n $acrName -g $resourceGroupName --sku Standard --admin-enabled true
-$acrUserName = az acr credential show -n $acrName --query username
-$acrPassword = az acr credential show -n $acrName --query passwords[0].value
+$acrUserName = $(az acr credential show -n $acrName --query username).replace('"','')
+$acrPassword = $(az acr credential show -n $acrName --query passwords[0].value).replace('"','')
 
 # Create the storage account to be used for Functions
 Write-Host 'About to create storage: ' $storageAccountName -ForegroundColor Green
