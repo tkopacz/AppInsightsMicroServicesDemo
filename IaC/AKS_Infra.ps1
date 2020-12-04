@@ -99,3 +99,5 @@ Write-Output "::set-output name=TMP_AKS_AI_ALERTS::$alertsAiKey"
 Write-Output "::set-output name=TMP_AKS_AI_DEVICES::$devicesAiKey"
 Write-Output "::set-output name=TMP_AKS_AI_BACK_OFFICE::$backofficeAiKey"
 Write-Output "::set-output name=TMP_AKS_CLUSTER_NAME::$AKS_CLUSTER_NAME"
+
+exit 0
