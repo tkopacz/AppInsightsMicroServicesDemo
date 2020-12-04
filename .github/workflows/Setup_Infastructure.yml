@@ -35,6 +35,7 @@ jobs:
         echo 2 $env:TMP_SERVICEBUS_CON
         echo 3 $env:TMP_SERVICEBUS_CON
         echo "The selected cosmos ${{ steps.SetupPaaS.outputs.TMP_COSMOS_CON }}"
+        echo "The selected cosmos name ${{ steps.SetupPaaS.outputs.TMP_COSMOS_DB_NAME }}"
     - name: 'Create GitHub Secret for Service Bus for CI/CD pipelines'
       uses: gliech/create-github-secret-action@v1
       with:

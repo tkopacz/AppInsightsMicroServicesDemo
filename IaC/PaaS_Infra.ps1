@@ -145,4 +145,5 @@ Write-Output "TMP_SERVICEBUS_CON=$serviceBusConnectionString" | Out-File -FilePa
 
 
 
-Write-Output '::set-output name=TMP_COSMOS_CON::'$cosmosConString
+Write-Output "::set-output name=TMP_COSMOS_CON::$cosmosConString"
+Write-Output '::set-output name=TMP_COSMOS_DB_NAME::'+$cosmosConString
