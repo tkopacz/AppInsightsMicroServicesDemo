@@ -64,7 +64,12 @@ $VERSION=$(az aks get-versions --location $azureRegion --query 'orchestrators[?!
 
 # Create AKS Cluster
 Write-Host 'About to create AKS Cluster: ' $AKS_CLUSTER_NAME -ForegroundColor Green
-az aks create --service-principal $env:SP_ID --client-secret $env:SP_SECRET --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --vm-set-type VirtualMachineScaleSets --node-count 2 --load-balancer-sku standard --location $azureRegion --kubernetes-version $VERSION --network-plugin azure --vnet-subnet-id $SUBNET_ID --service-cidr 10.2.0.0/24 --dns-service-ip 10.2.0.10 --docker-bridge-address 172.17.0.1/16 --generate-ssh-keys 
+try {
+    az aks create --service-principal $env:SP_ID --client-secret $env:SP_SECRET --resource-group $resourceGroupName --name $AKS_CLUSTER_NAME --vm-set-type VirtualMachineScaleSets --node-count 2 --load-balancer-sku standard --location $azureRegion --kubernetes-version $VERSION --network-plugin azure --vnet-subnet-id $SUBNET_ID --service-cidr 10.2.0.0/24 --dns-service-ip 10.2.0.10 --docker-bridge-address 172.17.0.1/16 --generate-ssh-keys 
+ } 
+ catch {
+     Write-Host "AKS cluster (probably) already there...moving on..." -ForegroundColor Red
+ }
 
 # Attach Azure Container Registry
 az aks update --name $AKS_CLUSTER_NAME --resource-group $resourceGroupName --attach-acr $acrName
@@ -87,6 +92,7 @@ try {
 
 # Set Environment Variables for next step in order to set GitHub Secrets needed for CI/CD pipelines
 # Application Insights Keys
+Write-Host 'About to write out variables' -ForegroundColor Green
 Write-Output "::set-output name=TMP_AKS_RESOURCE_GROUP::$resourceGroupName"
 Write-Output "::set-output name=TMP_AKS_AI_APIGW::$apiGwAiKey"
 Write-Output "::set-output name=TMP_AKS_AI_ALERTS::$alertsAiKey"
