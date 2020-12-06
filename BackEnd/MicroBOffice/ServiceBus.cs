@@ -21,7 +21,7 @@ namespace MicroBOffice
         {
             TelemetryClient lClient = new TelemetryClient();
 
-            lClient.TrackEvent("Custom Event BOfficeSBus.");
+            lClient.TrackEvent("Custom Event BOfficeSBus. Enabled logging to Storage.");
 
             log.LogInformation($"BOfficeSBus processed message: {mySbMsg}");
 
