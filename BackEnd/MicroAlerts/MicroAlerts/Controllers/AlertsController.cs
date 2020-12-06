@@ -27,11 +27,13 @@ namespace MicroAlerts.Controllers
 
         private readonly ILogger<AlertsController> _logger;
         private readonly ITopicClient _topicClient;
+        private readonly AlertEntityDbContext _alertsDb;
 
-        public AlertsController(ILogger<AlertsController> logger, ITopicClient aTopicClient)
+        public AlertsController(ILogger<AlertsController> logger, ITopicClient aTopicClient, AlertEntityDbContext aDb)
         {
             _logger = logger;
             _topicClient = aTopicClient;
+            _alertsDb = aDb;
         }
 
         [HttpGet]
@@ -41,18 +43,29 @@ namespace MicroAlerts.Controllers
             {
                 // Broadcast to Service bus - Demo purpose
                 await this.BroadcastNewAlertAdded(Guid.NewGuid().ToString());
-            }            
+            }
 
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new AlertEntity
+
+            var lExit = _alertsDb.getAlerts();
+
+            if (lExit.Count == 0)
             {
-                When = DateTime.Now.AddDays(index),
-                Name = Names[rng.Next(Names.Length)],
-                Decription = Descriptions[rng.Next(Names.Length)]
-            })
-            .ToArray();
+                var rng = new Random();
+                lExit = Enumerable.Range(1, 5).Select(index => new AlertEntity
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    When = DateTime.Now.AddDays(index),
+                    Name = Names[rng.Next(Names.Length)],
+                    Decription = Descriptions[rng.Next(Names.Length)]
+                }).ToList();
 
-            
+                // Save to db
+                _alertsDb.AddRange(lExit);
+
+                _alertsDb.SaveChanges();
+            }
+
+            return lExit;
         }
 
         [HttpPost]
@@ -64,7 +77,11 @@ namespace MicroAlerts.Controllers
 
         private void WriteToSqlDb(string aAlert)
         {
-            // TODO
+            AlertEntity lNewAlert = JsonConvert.DeserializeObject<AlertEntity>(aAlert);
+
+            _alertsDb.Add(lNewAlert);
+
+            _alertsDb.SaveChanges();
         }
 
         private async Task BroadcastNewAlertAdded(string aAlert)
@@ -100,6 +117,6 @@ namespace MicroAlerts.Controllers
             }
 
             return false;
-        }
+        }        
     }
 }
