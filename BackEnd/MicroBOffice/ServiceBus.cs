@@ -8,14 +8,24 @@ namespace MicroBOffice
 {
     public static class ServiceBus
     {
+        public class BackOfficeLog
+        {
+            public string PartitionKey { get; set; }
+            public string RowKey { get; set; }
+            public string Text { get; set; }
+        }
+
         [FunctionName("BOfficeSBus")]
-        public static void Run([ServiceBusTrigger("%ServiceBusTopicName%", "all", Connection = "ServiceBusConnectionString")]string mySbMsg, ILogger log)
+        [return: Table("BackOfficeLogs", Connection = "StorageConnectionString")]
+        public static BackOfficeLog Run([ServiceBusTrigger("%ServiceBusTopicName%", "all", Connection = "ServiceBusConnectionString")]string mySbMsg, ILogger log)
         {
             TelemetryClient lClient = new TelemetryClient();
 
             lClient.TrackEvent("Custom Event BOfficeSBus.");
 
             log.LogInformation($"BOfficeSBus processed message: {mySbMsg}");
+
+            return new BackOfficeLog { PartitionKey = "Http", RowKey = Guid.NewGuid().ToString(), Text = mySbMsg };
         }
     }
 }
