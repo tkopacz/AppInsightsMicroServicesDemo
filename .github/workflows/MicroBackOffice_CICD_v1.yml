@@ -69,8 +69,8 @@ jobs:
         uses: azure/aks-set-context@v1
         with:
             creds: '${{ secrets.AZURE_CREDENTIALS }}'
-            resource-group: AppInsightsMicroservices_RG
-            cluster-name: aksinfra-appinsightsmicro
+            resource-group: '${{ secrets.AKS_RESOURCE_GROUP_NAME }}'
+            cluster-name: '${{ secrets.AKS_CLUSTER_NAME }}'
         id: login
       - uses: azure/k8s-create-secret@v1
         with:
