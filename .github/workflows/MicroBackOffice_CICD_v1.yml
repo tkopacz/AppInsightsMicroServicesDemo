@@ -84,5 +84,4 @@ jobs:
           manifests: |
               ./AKS/v1/deploy_backoffice_pod.yaml              
           images: '${{ secrets.CONTAINER_REGISTRY }}/msbackoffice:${{ github.run_number }}'          
-          kubectl-version: 'latest'
-        
+          kubectl-version: 'latest'     
