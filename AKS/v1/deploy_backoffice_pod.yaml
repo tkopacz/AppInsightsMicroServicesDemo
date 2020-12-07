@@ -28,6 +28,11 @@ spec:
             secretKeyRef:
               name: backofficesecrets # the name of the Kubernetes secret containing the data
               key: APPINSIGHTS_INSTRUMENTATIONKEY # the key inside the Kubernetes secret containing the data
+        - name: StorageConnectionString
+          valueFrom:
+            secretKeyRef:
+              name: backofficesecrets # the name of the Kubernetes secret containing the data
+              key: STORAGECONNECTIONSTRING
         imagePullPolicy: Always
         ports:
         - containerPort: 80

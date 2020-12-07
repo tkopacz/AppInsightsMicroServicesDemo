@@ -63,7 +63,7 @@ jobs:
         with:
           namespace: 'default'
           secret-type: 'generic'
-          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.AKS_SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.AKS_ALERTS_AI_KEY }}
+          arguments:  --from-literal=SERVICEBUSCONNECTIONSTRING=${{ secrets.AKS_SERVICE_BUS_CONNECTIONSTRING }} --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.AKS_ALERTS_AI_KEY }} --from-literal=SQLSERVERCONNECTIONSTRING=${{ secrets.AKS_SQL_SERVER_CONNECTION_STRING }}
           secret-name: alertssecrets
       - name: 'Deploy Alerts Microservice to AKS Cluster'
         uses: azure/k8s-deploy@v1.3                    

@@ -27,11 +27,18 @@ namespace MicroAlerts
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AlertEntityDbContext>(opts => opts.UseSqlServer(Configuration["SQLServer:ConnectionString"]));            
-            
-            services.AddControllers();
+            // Add Application Insights
             services.AddApplicationInsightsTelemetry();
+
+            // Add SQL Server / Db connectivity
+            services.AddDbContext<AlertEntityDbContext>(opts => opts.UseSqlServer(Configuration["SQLServer:ConnectionString"],
+                providerOptions => providerOptions.EnableRetryOnFailure()));                        
+               
+            // Add Service Bus
             services.AddSingleton<ITopicClient>(GetServiceBusTopic);
+
+            // Add controllers
+            services.AddControllers();
         }
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)

@@ -28,6 +28,11 @@ spec:
             secretKeyRef:
               name: alertssecrets # the name of the Kubernetes secret containing the data
               key: APPINSIGHTS_INSTRUMENTATIONKEY # the key inside the Kubernetes secret containing the data
+        - name: SQLServer__ConnectionString
+          valueFrom:
+            secretKeyRef:
+              name: alertssecrets # the name of the Kubernetes secret containing the data
+              key: AKS_SQL_SERVER_CONNECTION_STRING
         imagePullPolicy: Always
         ports:
         - containerPort: 80
