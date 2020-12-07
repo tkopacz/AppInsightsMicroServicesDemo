@@ -32,7 +32,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: alertssecrets # the name of the Kubernetes secret containing the data
-              key: AKS_SQL_SERVER_CONNECTION_STRING
+              key: SQLSERVERCONNECTIONSTRING
         imagePullPolicy: Always
         ports:
         - containerPort: 80
