@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicroAlerts
 {
@@ -26,9 +27,18 @@ namespace MicroAlerts
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            // Add Application Insights
             services.AddApplicationInsightsTelemetry();
+
+            // Add SQL Server / Db connectivity
+            services.AddDbContext<AlertEntityDbContext>(opts => opts.UseSqlServer(Configuration["SQLServer:ConnectionString"],
+                providerOptions => providerOptions.EnableRetryOnFailure()));                        
+               
+            // Add Service Bus
             services.AddSingleton<ITopicClient>(GetServiceBusTopic);
+
+            // Add controllers
+            services.AddControllers();
         }
 
         private ITopicClient GetServiceBusTopic(IServiceProvider options)
@@ -48,7 +58,7 @@ namespace MicroAlerts
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AlertEntityDbContext aContext)
         {
             if (env.IsDevelopment())
             {
@@ -64,7 +74,7 @@ namespace MicroAlerts
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });            
+            });
         }
     }
 }
